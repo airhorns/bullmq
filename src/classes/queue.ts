@@ -24,11 +24,13 @@ export class Queue<
 
     // tslint:disable: no-floating-promises
     this.waitUntilReady().then(client => {
-      client.hset(
-        this.keys.meta,
-        'opts.maxLenEvents',
-        get(opts, 'streams.events.maxLen', 10000),
-      );
+      if (!this.closing) {
+        client.hset(
+          this.keys.meta,
+          'opts.maxLenEvents',
+          get(opts, 'streams.events.maxLen', 10000),
+        );
+      }
     });
   }
 
